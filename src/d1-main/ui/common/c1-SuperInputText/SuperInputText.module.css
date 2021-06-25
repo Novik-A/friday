@@ -1,6 +1,6 @@
 .input {
     margin: 10px;
-    border: none;
+    border: 2px solid #f9f9f9;
     font-family: 'Lato', Calibri, Arial, sans-serif;
     font-size: 17px;
     font-weight: 400;
@@ -14,7 +14,6 @@
 }
 .input:focus {
     outline: none;
-    border: 3px solid #f9f9f9;
 }
 
 .superInput {
@@ -23,7 +22,7 @@
 }
 
 .errorInput {
-    border: 3px solid red;
+    border: 2px solid red;
 }
 
 .error {
