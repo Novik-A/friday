@@ -1,12 +1,12 @@
 .header {
     display: flex;
-    width: 320px;
-    transition-duration: 500ms;
-    transform: translate(-280px);
+    /*width: 320px;*/
+    /*transition-duration: 500ms;*/
+    /*transform: translate(-280px);*/
 }
 .header:hover {
-    transition-duration: 500ms;
-    transform: translate(0);
+    /*transition-duration: 500ms;*/
+    /*transform: translate(0);*/
 }
 
 .link {
