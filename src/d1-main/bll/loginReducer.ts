@@ -18,7 +18,7 @@ const initialState = {
     }
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const loginRegisterReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'AUTH/LOGIN':
             return {...state, userData: action.loginResponse}

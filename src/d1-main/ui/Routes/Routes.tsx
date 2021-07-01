@@ -1,13 +1,12 @@
 import React from "react";
-import {Redirect, Route, Switch } from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {Error404} from "../common/c4-Error404/Error404";
 import {Login} from "../../../d2-features/f1-auth/a1-login/Login";
-import { Register } from "../../../d2-features/f1-auth/a2-register/Register";
+import {Register} from "../../../d2-features/f1-auth/a2-register/Register";
 import {TestPage} from "../../../d2-features/f0-test/TestPage";
 import {Main} from "../Main/Main";
-import {RestorePassword} from "../../../d2-features/f1-auth/a2-register/RestorePassword";
-import {UpdatePassword} from "../../../d2-features/f1-auth/a2-register/UpdatePassword";
 import ForgotPage from "../../../d2-features/f1-auth/a3-forgot/f-1-ui/ForgotPage";
+import SetPass from "../../../d2-features/f1-auth/a3-forgot/f-1-ui/SetPass";
 
 export const PATH = {
     MAIN: "/main",
@@ -15,7 +14,7 @@ export const PATH = {
     REGISTER: "/register",
     TEST: "/test",
     FORGOT: "/forgot",
-    SET_PASS: "/setPass",
+    SET_PASS: "/set-new-password/:token",
 }
 
 export const Routes = () => {
@@ -27,7 +26,7 @@ export const Routes = () => {
                 <Route path={PATH.LOGIN} render={() => <Login/>}/>
                 <Route path={PATH.REGISTER} render={() => <Register/>}/>
                 <Route path={PATH.FORGOT} render={() => <ForgotPage/>}/>
-                <Route path={PATH.SET_PASS} render={() => <UpdatePassword/>}/>
+                <Route path={PATH.SET_PASS} render={() => <SetPass/>}/>
                 <Route path={PATH.TEST} render={() => <TestPage/>}/>
                 <Route render={() => <Error404/>}/>
 

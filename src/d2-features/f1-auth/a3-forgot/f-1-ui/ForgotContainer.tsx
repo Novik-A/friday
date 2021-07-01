@@ -1,20 +1,22 @@
 import React from 'react';
 import {Redirect} from "react-router";
-// import {SIGN_IN_PATH} from "../../../../neko-1-main/m-1-ui/Routes";
 import Forgot from './Forgot';
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../../d1-main/bll/store";
+import {CheckEmail} from "./CheckEmail";
 
 const ForgotContainer: React.FC = () => {
+    const linkSent = useSelector<AppRootStateType, boolean>(state => state.forgot.linkSent)
+    const email = useSelector<AppRootStateType, string>(state => state.forgot.email)
+    const error = useSelector<AppRootStateType, string>(state => state.forgot.error)
 
-
-    if(false) {
+    if(false) { // если не залогинен
         return <Redirect to={'/login'} />
     }
 
-    return (
-        <Forgot
-
-        />
-    );
+    return <>
+        {linkSent ? <CheckEmail email={email}/> : <Forgot error={error}/>}
+    </>
 };
 
 export default ForgotContainer;
