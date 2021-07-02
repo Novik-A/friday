@@ -2,3 +2,13 @@
     margin: 10px;
 }
 
+form {
+    padding: 20px;
+    margin: 10px 0;
+    text-align: center;
+    background: #eee;
+    border-radius: 5px;
+    box-shadow: 4px 4px 12px #ddd;
+}
+
+form label {display: block; margin-left: 10px;}
