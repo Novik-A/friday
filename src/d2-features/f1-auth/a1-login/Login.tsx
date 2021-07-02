@@ -1,65 +1,70 @@
-import React, {ChangeEvent, useState} from "react";
+import React from "react";
 import {useDispatch} from "react-redux";
-import { loginTC } from "../../../d1-main/bll/loginReducer";
-import {LoginParamsType} from "../../../d1-main/dal/api-login";
+import {loginTC} from "../../../d1-main/bll/loginReducer";
+import {Field, useFormik} from "formik";
 
 
 export const Login = () => {
     const dispatch = useDispatch()
 
-    const onLoginHandler = () => {
-        dispatch(loginTC(loginData))
+    type FormikErrorType = {
+        email?: string
+        password?: string
+        rememberMe?: boolean
     }
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [checkbox, setCheckbox] = useState(false)
-    let loginDataDefault = {
-        email: email,
-        password: password,
-        rememberMe: checkbox
+
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            rememberMe: false
+        },
+        validate: (values) => {
+            const errors: FormikErrorType = {};
+            if (!values.email) {
+                errors.email = 'Required';
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address';
+            }
+            if (!values.password) {
+                errors.password = 'Password is required';
+            }   else if (!/^[A-Z0-9._%+-]{5,15}$/i.test(values.password)) {
+                errors.email = 'Invalid password';
+            }
+            return errors;
+        },
+        onSubmit: values => {
+            console.log(values)
+            alert(JSON.stringify(values));
+            dispatch(loginTC(values))
+            formik.resetForm()
+        },
+    })
+    let onRememberMeChange = () => {
+       formik.values.rememberMe = !formik.values.rememberMe;
     }
-    const [loginData, setLoginData] = useState(loginDataDefault)
-    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.currentTarget.value)
-        setLoginData({
-            email: email,
-            password: password,
-            rememberMe: checkbox
-        })
-    }
-    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.currentTarget.value)
-        setLoginData({
-            email: email,
-            password: password,
-            rememberMe: checkbox
-        })
-    }
-    const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setCheckbox(e.currentTarget.checked)
-        setLoginData({
-            email: email,
-            password: password,
-            rememberMe: checkbox
-        })
-    }
+
     return (
         <div>
             <div>Login</div>
-            loginTC
+            <form action="" onSubmit={formik.handleSubmit}>
                 <div>
                     <label htmlFor="email">email</label>
-                    <input onChange={onEmailChange} type='text' id='email'/>
+                    <input  type='text' id='email'
+                            {...formik.getFieldProps('email')} />
                 </div>
                 <div>
                     <label htmlFor="password">password</label>
-                    <input onChange={onPasswordChange} type='password' id='password'/>
+                    <input type='password' id='password'
+                           {...formik.getFieldProps('password')} />
                 </div>
                 <div>
                     <label htmlFor="rememberMe">remember me</label>
-                    <input onChange={onCheckboxChange} type="checkbox" id='rememberMe'/>
+                    <input onChange={onRememberMeChange}
+                           type="checkbox" name="rememberMe" />
                 </div>
-                <button onClick={onLoginHandler}>Send</button>
+                <button type='submit'>Send</button>
+            </form>
         </div>
     );
 }

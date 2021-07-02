@@ -12,6 +12,7 @@ export const loginAPI = {
     },
 }
 
+
 // types
 export type LoginParamsType = {
     email: string

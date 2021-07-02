@@ -2,20 +2,20 @@ import {Dispatch} from 'redux'
 import {authAPI} from "../dal/api";
 
 const initialState = {
+    isLoggedIn: false
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'AUTH/SET-IS-LOGGED-IN':
-            return {...state}
+            return {...state, isLoggedIn: action.isLogged}
         default:
             return state
     }
 }
 
 // actions
-export const setIsLoggedIn = () =>
-    ({type: 'AUTH/SET-IS-LOGGED-IN'} as const)
+export const setIsLoggedInAC = (isLogged: boolean) => ({type: 'AUTH/SET-IS-LOGGED-IN', isLogged} as const)
 
 // thunks
 
@@ -32,4 +32,5 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
 
 // types
 type InitialStateType = typeof initialState
-type ActionsType = ReturnType<typeof setIsLoggedIn>
+export type setIsLoggedInAC = ReturnType<typeof setIsLoggedInAC>
+type ActionsType = setIsLoggedInAC
