@@ -66,6 +66,7 @@ export const Register = () => {
             <div className={s.page}>Sing In</div>
             <form action="" onSubmit={formik.handleSubmit}>
                 <div>
+                    <label htmlFor="email">email</label>
                     <SuperInputText id='email' error={error}
                                     {...formik.getFieldProps('email')}
                     />
@@ -73,6 +74,7 @@ export const Register = () => {
                     formik.errors.email ? <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
                 </div>
                 <div>
+                    <label htmlFor="password">password</label>
                     <SuperInputPassword id='password'
                                         {...formik.getFieldProps('password')}
                     />

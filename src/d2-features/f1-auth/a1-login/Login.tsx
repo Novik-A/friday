@@ -70,13 +70,13 @@ export const Login = () => {
             <div className={s.page}>Sing In</div>
             <form onSubmit={formik.handleSubmit}>
                 <div>
-                    {/*<label htmlFor="email">email</label>*/}
+                    <label htmlFor="email">email</label>
                     <SuperInputText id='email' error={error}
                             {...formik.getFieldProps('email')} />
                     {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
                 </div>
                 <div>
-                    {/*<label htmlFor="password">password</label>*/}
+                    <label htmlFor="password">password</label>
                     <SuperInputPassword id='password'
                            {...formik.getFieldProps('password')} />
                     {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
