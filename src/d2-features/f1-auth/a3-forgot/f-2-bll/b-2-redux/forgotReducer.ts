@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {ForgotAPI, ForgotParamsType, SetPassParamsType} from "../../f-3-dal/ForgotAPI";
+import {setAppStatusAC, SetAppStatusActionType} from "../../../../../d1-main/bll/appReducer";
 
 const FORGOT_LOADING = 'FORGOT/LOADING';
 const FORGOT_ERROR = 'FORGOT/ERROR';
@@ -40,6 +41,7 @@ export const setPassSuccess = () =>
 
 // thunks
 export const forgotTC = (email: string) => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
     const forgotData: ForgotParamsType = {
         email: email,
         from: "test-front-admin <ai73a@yandex.by>",
@@ -49,6 +51,7 @@ export const forgotTC = (email: string) => (dispatch: Dispatch<ActionsType>) => 
     ForgotAPI.forgot(forgotData)
         .then(res => {
             dispatch(forgotSuccess(forgotData.email))
+            dispatch(setAppStatusAC('succeeded'))
         })
         .catch((e) => {
             const error = e.response
@@ -56,13 +59,16 @@ export const forgotTC = (email: string) => (dispatch: Dispatch<ActionsType>) => 
                 : (e.message + ', more details in the console');
             console.log('Error: ', error)
             dispatch(forgotError(error))
+            dispatch(setAppStatusAC('failed'))
         })
 }
 
 export const setPassTC = (data: SetPassParamsType) => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
     ForgotAPI.setPass(data)
         .then(res => {
             dispatch(setPassSuccess())
+            dispatch(setAppStatusAC('succeeded'))
         })
         .catch((e) => {
             const error = e.response
@@ -70,6 +76,7 @@ export const setPassTC = (data: SetPassParamsType) => (dispatch: Dispatch<Action
                 : (e.message + ', more details in the console');
             console.log('Error: ', error)
             dispatch(forgotError(error))
+            dispatch(setAppStatusAC('failed'))
         })
 }
 
@@ -78,4 +85,6 @@ export const setPassTC = (data: SetPassParamsType) => (dispatch: Dispatch<Action
 type InitialStateType = typeof forgotInitialState
 
 type ActionsType = ReturnType<typeof forgotSuccess>
-    | ReturnType<typeof forgotError> | ReturnType<typeof setPassSuccess>
+    | ReturnType<typeof forgotError>
+    | ReturnType<typeof setPassSuccess>
+    | SetAppStatusActionType

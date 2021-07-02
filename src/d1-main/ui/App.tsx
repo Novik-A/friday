@@ -1,23 +1,28 @@
 import React from 'react';
 import './App.css';
-import {HashRouter} from "react-router-dom";
-import {Provider} from "react-redux";
+import {useSelector} from "react-redux";
 import {Header} from "./Header/Header";
 import {Routes} from "./Routes/Routes";
-import {store} from '../bll/store';
+import {AppRootStateType} from '../bll/store';
+import {RequestStatusType} from "../bll/appReducer";
 
 const App = () => {
-  return (
-    <div className="App">
-      <HashRouter>
-        <Provider store={store}>
-          <Header/>
-          <Routes/>
-        </Provider>
-      </HashRouter>
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    // const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+    // const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    // const dispatch = useDispatch()
 
-    </div>
-  );
+    // useEffect(() => {
+    //     dispatch(initializeAppTC())
+    // }, [])
+
+    return (
+        <div className="App">
+            <Header/>
+            <Routes/>
+            {status === 'loading' && <div>LOADING...</div>}
+        </div>
+    );
 }
 
 export default App;
