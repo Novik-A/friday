@@ -2,36 +2,57 @@ import { AxiosError } from 'axios';
 import {Dispatch} from 'redux'
 import {authAPI} from "../dal/api";
 
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+
 const initialState = {
+    status: 'idle' as RequestStatusType,
+    error: null as string | null,
+    isInitialized: false
 }
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
+        case 'APP/SET-STATUS':
+            return {...state, status: action.status}
+        case 'APP/SET-ERROR':
+            return {...state, error: action.error}
         case 'APP/SET-IS-INITIALIZED':
-            return {...state}
+            return {...state, isInitialized: action.isInitialized}
         default:
             return state
     }
 }
 
 // actions
-export const setIsInitialized = () =>
-    ({type: 'APP/SET-IS-INITIALIZED'} as const)
+export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status}) as const
+export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error}) as const
+export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP/SET-IS-INITIALIZED', isInitialized}) as const
 
 // thunks
-
-export const initializeAppTC = () => (dispatch: Dispatch<ActionsType>) => {
-    authAPI.me().then(res => {
-
-    })
-        .catch((err: AxiosError) => {
-
-        })
-        .finally(() => {
-
-    })
+export const initializeAppTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    // authAPI.me().then(res => {
+    //     if (res.data.resultCode === 0) {
+    //         // dispatch(setIsLoggedInAC(true))
+    //         dispatch(setAppStatusAC('succeeded'))
+    //     } else {
+    //         // handleServerAppError(dispatch, res.data)
+    //     }
+    // })
+    //     .catch((err: AxiosError) => {
+    //         // handleServerNetworkError(dispatch, err.message)
+    //     }).finally(() => {
+    //     dispatch(setIsInitializedAC(true))
+    // })
 }
 
 // types
-type InitialStateType = typeof initialState
-type ActionsType = ReturnType<typeof setIsInitialized>
+export type InitialStateType = typeof initialState
+export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
+export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
+export type SetIsInitializedActionType = ReturnType<typeof setIsInitializedAC>
+
+type ActionsType =
+    | SetAppStatusActionType
+    | SetAppErrorActionType
+    | SetIsInitializedActionType
