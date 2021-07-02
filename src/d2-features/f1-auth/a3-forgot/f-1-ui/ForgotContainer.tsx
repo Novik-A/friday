@@ -9,9 +9,10 @@ const ForgotContainer: React.FC = () => {
     const linkSent = useSelector<AppRootStateType, boolean>(state => state.forgot.linkSent)
     const email = useSelector<AppRootStateType, string>(state => state.forgot.email)
     const error = useSelector<AppRootStateType, string>(state => state.forgot.error)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
 
-    if(false) { // если не залогинен
-        return <Redirect to={'/login'} />
+    if(isLoggedIn) { // если не залогинен
+        return <Redirect to={'/'} />
     }
 
     return <>

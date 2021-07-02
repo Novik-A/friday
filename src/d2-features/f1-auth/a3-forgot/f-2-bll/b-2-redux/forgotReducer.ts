@@ -83,8 +83,9 @@ export const setPassTC = (data: SetPassParamsType) => (dispatch: Dispatch<Action
 
 // types
 type InitialStateType = typeof forgotInitialState
+export type FogotErrorActionType = ReturnType<typeof forgotError>
 
 type ActionsType = ReturnType<typeof forgotSuccess>
-    | ReturnType<typeof forgotError>
+    | FogotErrorActionType
     | ReturnType<typeof setPassSuccess>
     | SetAppStatusActionType

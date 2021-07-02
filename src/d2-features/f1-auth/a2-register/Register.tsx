@@ -1,13 +1,23 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import { registerTC } from "../../../d1-main/bll/loginReducer";
 import {Redirect, useHistory} from "react-router-dom";
 import {AppRootStateType} from "../../../d1-main/bll/store";
+import s from "../a3-forgot/f-1-ui/Forgot.module.css";
+import SuperInputText from "../../../d1-main/ui/common/c1-SuperInputText/SuperInputText";
+import SuperInputPassword from "../../../d1-main/ui/common/c1-SuperInputText/SuperInputPassword";
+import SuperButton from "../../../d1-main/ui/common/c2-SuperButton/SuperButton";
+import {forgotError} from "../a3-forgot/f-2-bll/b-2-redux/forgotReducer";
 
 export const Register = () => {
+    const error = useSelector<AppRootStateType, string>(state => state.forgot.error)
+    const isReg = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isRegistered)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
+    useEffect(() => {
+        dispatch(forgotError(''))
+    }, [])
 
-    let isReg = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isRegistered)
     type FormikErrorType = {
         email?: string
         password?: string
@@ -46,24 +56,30 @@ export const Register = () => {
         // dispatch(isInitializedAC(true))
         return <Redirect to={'/login'} />
     }
+    if(isLoggedIn) {
+        return <Redirect to={'/profile'} />
+    }
 
     return (
-        <div>
-            <div>Register</div>
+        <div className={s.body}>
+            <div className={s.header}>It-incubator</div>
+            <div className={s.page}>Sing In</div>
             <form action="" onSubmit={formik.handleSubmit}>
-                <input type='text'
-                    {...formik.getFieldProps('email')}
-                />
-                {   formik.touched.email &&
-                formik.errors.email ? <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
-                <input type='password'
-                    {...formik.getFieldProps('password')}
-                />
-                {   formik.touched.password &&
-                formik.errors.password ? <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
-                <button type="submit">
-                    Submit
-                </button>
+                <div>
+                    <SuperInputText id='email' error={error}
+                                    {...formik.getFieldProps('email')}
+                    />
+                    {   formik.touched.email &&
+                    formik.errors.email ? <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
+                </div>
+                <div>
+                    <SuperInputPassword id='password'
+                                        {...formik.getFieldProps('password')}
+                    />
+                    {   formik.touched.password &&
+                    formik.errors.password ? <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
+                </div>
+                <SuperButton type='submit'>Register</SuperButton>
             </form>
         </div>
 

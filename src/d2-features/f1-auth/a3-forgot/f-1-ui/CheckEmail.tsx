@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './Forgot.module.css'
+import s from './Forgot.module.css';
 
 
 type CheckEmailProps = {

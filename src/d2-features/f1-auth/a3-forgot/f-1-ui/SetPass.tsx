@@ -17,6 +17,7 @@ const SetPass: React.FC = () => {
     }, [])
     const error = useSelector<AppRootStateType, string>(state => state.forgot.error)
     const setNewPass = useSelector<AppRootStateType, boolean>(state => state.forgot.setNewPass)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
 
     const [password, setPassword] = useState('')
     const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +35,7 @@ const SetPass: React.FC = () => {
         }
     }
 
-    if (setNewPass) {
+    if (setNewPass || !isLoggedIn) {
         return <Redirect to={'/login'}/>
     }
 

@@ -7,6 +7,7 @@ import {TestPage} from "../../../d2-features/f0-test/TestPage";
 import {Main} from "../Main/Main";
 import ForgotPage from "../../../d2-features/f1-auth/a3-forgot/f-1-ui/ForgotPage";
 import SetPass from "../../../d2-features/f1-auth/a3-forgot/f-1-ui/SetPass";
+import {Profile} from "../Profile/Profile";
 
 export const PATH = {
     MAIN: "/main",
@@ -15,6 +16,7 @@ export const PATH = {
     TEST: "/test",
     FORGOT: "/forgot",
     SET_PASS: "/set-new-password/:token",
+    PROFILE: "/profile",
 }
 
 export const Routes = () => {
@@ -27,6 +29,7 @@ export const Routes = () => {
                 <Route path={PATH.REGISTER} render={() => <Register/>}/>
                 <Route path={PATH.FORGOT} render={() => <ForgotPage/>}/>
                 <Route path={PATH.SET_PASS} render={() => <SetPass/>}/>
+                <Route path={PATH.PROFILE} render={() => <Profile/>}/>
                 <Route path={PATH.TEST} render={() => <TestPage/>}/>
                 <Route render={() => <Error404/>}/>
 

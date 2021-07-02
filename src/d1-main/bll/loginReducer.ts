@@ -4,6 +4,8 @@ import {loginAPI, LoginParamsType, ResponseLoginType } from '../dal/api-login';
 import {registerAPI, RegisterParamsType, ResponseRegisterType} from "../dal/api-register";
 import { setIsLoggedInAC } from './authReducer';
 import { push } from 'react-router-redux';
+import {setAppStatusAC, SetAppStatusActionType} from "./appReducer";
+import {FogotErrorActionType, forgotError} from "../../d2-features/f1-auth/a3-forgot/f-2-bll/b-2-redux/forgotReducer";
 
 
 let defaultDate: Date = new Date();
@@ -21,13 +23,14 @@ const initialState = {
         rememberMe: false,
         error: ""
     },
-    isRegistered: false
+    isRegistered: false,
+    isLoggedIn: false
 }
 
 export const loginRegisterReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'AUTH/LOGIN':
-            return {...state, userData: action.loginResponse}
+            return {...state, userData: action.loginResponse, isLoggedIn: true}
         case "AUTH/IS_REGISTERED": {
             return  {...state, isRegistered: action.isRegistered}
         }
@@ -43,28 +46,36 @@ export const registerAC = () => ({type: 'AUTH/REGISTER'} as const)
 
 // thunks
 export const loginTC = (loginData: LoginParamsType) => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
     loginAPI.login(loginData)
         .then(res => {
             dispatch(loginAC(res.data))
             dispatch(setIsLoggedInAC(true))
+            dispatch(setAppStatusAC('succeeded'))
         })
         .catch((e) => {
             const error = e.response
                 ? e.response.data.error
                 : (e.message + ', more details in the console');
             console.log('Error: ', error)
+            dispatch(forgotError(error))
+            dispatch(setAppStatusAC('failed'))
         })
 }
 
 export const registerTC = (registerData: RegisterParamsType) => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
     registerAPI.register(registerData).then(res => {
         dispatch(registerAC())
         dispatch(isRegisteredAC(true))
+        dispatch(setAppStatusAC('succeeded'))
     }).catch((e) => {
         const error = e.response
             ? e.response.data.error
             : (e.message + ', more details in the console');
         console.log('Error: ', error)
+        dispatch(forgotError(error))
+        dispatch(setAppStatusAC('failed'))
     })
 }
 
@@ -72,8 +83,10 @@ export const registerTC = (registerData: RegisterParamsType) => (dispatch: Dispa
 type InitialStateType = {
     userData: ResponseLoginType
     isRegistered: boolean
+    isLoggedIn: boolean
 }
 type RegisterActionType = ReturnType<typeof registerAC>
 type loginActionType = ReturnType<typeof loginAC>
 type IsRegisteredActionType = ReturnType<typeof isRegisteredAC>
-type ActionsType = loginActionType | RegisterActionType | setIsLoggedInAC | IsRegisteredActionType
+type ActionsType = loginActionType | RegisterActionType | setIsLoggedInAC
+    | IsRegisteredActionType | SetAppStatusActionType | FogotErrorActionType

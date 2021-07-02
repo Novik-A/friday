@@ -15,6 +15,14 @@
 .text {
     font-size: 14px;
     max-width: 300px;
+    color: #707070;
+}
+
+.textLink {
+    text-decoration: none;
+    font-size: 14px;
+    max-width: 300px;
+    color: black;
 }
 
 .link {

@@ -9,7 +9,7 @@ import {RequestStatusType} from "../bll/appReducer";
 const App = () => {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     // const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
-    // const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
     // const dispatch = useDispatch()
 
     // useEffect(() => {
@@ -18,7 +18,7 @@ const App = () => {
 
     return (
         <div className="App">
-            <Header/>
+            <Header isLoggedIn={isLoggedIn}/>
             <Routes/>
             {status === 'loading' && <div>LOADING...</div>}
         </div>

@@ -1,11 +1,27 @@
-import React from "react";
-import {useDispatch} from "react-redux";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "../../../d1-main/bll/loginReducer";
-import {Field, useFormik} from "formik";
+import {useFormik} from "formik";
+import s from '../a3-forgot/f-1-ui/Forgot.module.css';
+import {NavLink} from "react-router-dom";
+import {PATH} from "../../../d1-main/ui/Routes/Routes";
+import SuperInputText from "../../../d1-main/ui/common/c1-SuperInputText/SuperInputText";
+import SuperInputPassword from "../../../d1-main/ui/common/c1-SuperInputText/SuperInputPassword";
+import {AppRootStateType} from "../../../d1-main/bll/store";
+import {Redirect} from "react-router";
+import SuperButton from "../../../d1-main/ui/common/c2-SuperButton/SuperButton";
+import SuperCheckbox from "../../../d1-main/ui/common/c3-SuperCheckbox/SuperCheckbox";
+import {forgotError} from "../a3-forgot/f-2-bll/b-2-redux/forgotReducer";
 
 
 export const Login = () => {
     const dispatch = useDispatch()
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
+    const error = useSelector<AppRootStateType, string>(state => state.forgot.error)
+
+    useEffect(() => {
+        dispatch(forgotError(''))
+    }, [])
 
     type FormikErrorType = {
         email?: string
@@ -27,44 +43,58 @@ export const Login = () => {
                 errors.email = 'Invalid email address';
             }
             if (!values.password) {
-                errors.password = 'Password is required';
+                errors.password = 'Required';
             }   else if (!/^[A-Z0-9._%+-]{5,15}$/i.test(values.password)) {
                 errors.email = 'Invalid password';
             }
             return errors;
         },
         onSubmit: values => {
-            console.log(values)
-            alert(JSON.stringify(values));
+            // console.log(values)
+            // alert(JSON.stringify(values));
             dispatch(loginTC(values))
             formik.resetForm()
         },
     })
-    let onRememberMeChange = () => {
-       formik.values.rememberMe = !formik.values.rememberMe;
+    // let onRememberMeChange = () => {
+    //    formik.values.rememberMe = !formik.values.rememberMe;
+    // }
+
+    if(isLoggedIn) {
+        return <Redirect to={'/profile'} />
     }
 
     return (
-        <div>
-            <div>Login</div>
-            <form action="" onSubmit={formik.handleSubmit}>
+        <div className={s.body}>
+            <div className={s.header}>It-incubator</div>
+            <div className={s.page}>Sing In</div>
+            <form onSubmit={formik.handleSubmit}>
                 <div>
-                    <label htmlFor="email">email</label>
-                    <input  type='text' id='email'
+                    {/*<label htmlFor="email">email</label>*/}
+                    <SuperInputText id='email' error={error}
                             {...formik.getFieldProps('email')} />
+                    {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
                 </div>
                 <div>
-                    <label htmlFor="password">password</label>
-                    <input type='password' id='password'
+                    {/*<label htmlFor="password">password</label>*/}
+                    <SuperInputPassword id='password'
                            {...formik.getFieldProps('password')} />
+                    {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
                 </div>
                 <div>
-                    <label htmlFor="rememberMe">remember me</label>
-                    <input onChange={onRememberMeChange}
-                           type="checkbox" name="rememberMe" />
+                    {/*<label htmlFor="rememberMe">remember me</label>*/}
+                    {/*<input onChange={onRememberMeChange}*/}
+                    {/*       type="checkbox" name="rememberMe" />*/}
+                    <SuperCheckbox children={'Remember me'}
+                                   {...formik.getFieldProps('rememberMe')}/>
                 </div>
-                <button type='submit'>Send</button>
+                <NavLink to={PATH.FORGOT} className={s.textLink}>Forgot password</NavLink>
+                <div>
+                    <SuperButton type='submit'>Login</SuperButton>
+                </div>
             </form>
+            <div className={s.text}>Don't have an account?</div>
+            <NavLink to={PATH.REGISTER} className={s.link}>Sing Up</NavLink>
         </div>
     );
 }

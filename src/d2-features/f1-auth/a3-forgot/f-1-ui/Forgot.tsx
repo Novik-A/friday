@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import s from './Forgot.module.css'
+import s from './Forgot.module.css';
 import SuperInputText from "../../../../d1-main/ui/common/c1-SuperInputText/SuperInputText";
 import SuperButton from "../../../../d1-main/ui/common/c2-SuperButton/SuperButton";
 import {PATH} from "../../../../d1-main/ui/Routes/Routes";
