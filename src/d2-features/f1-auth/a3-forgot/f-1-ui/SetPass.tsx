@@ -43,7 +43,7 @@ const SetPass: React.FC = () => {
         <div className={s.body}>
             <div className={s.header}>It-incubator</div>
             <div className={s.page}>Create new password</div>
-            <SuperInputText onChange={onPasswordChange} error={error} id={'Password'}/>
+            <SuperInputText onChange={onPasswordChange} error={error} placeholder={'Password'}/>
             <div className={s.text}>Create new password and we will send you further instructions to email</div>
             <SuperButton onClick={onSetPassHandler}>Create new password</SuperButton>
         </div>

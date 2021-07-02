@@ -35,7 +35,7 @@ const Forgot: React.FC<ForgotProps> = ({error}) => {
         <div className={s.body}>
             <div className={s.header}>It-incubator</div>
             <div className={s.page}>Forgot your password?</div>
-            <SuperInputText onChange={onEmailChange} error={error} id={'Email'}/>
+            <SuperInputText onChange={onEmailChange} error={error} placeholder={'Email'}/>
             <div className={s.text}>Enter your email address and we will send you further instructions</div>
             <SuperButton onClick={onForgotHandler}>Send Instructions</SuperButton>
             <div className={s.text}>Did you remember your password?</div>
