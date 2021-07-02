@@ -35,7 +35,7 @@ const SetPass: React.FC = () => {
         }
     }
 
-    if (setNewPass || !isLoggedIn) {
+    if (setNewPass) {
         return <Redirect to={'/login'}/>
     }
 
