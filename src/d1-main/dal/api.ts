@@ -1,14 +1,16 @@
 import axios from 'axios'
+import {baseURL} from "./base-url";
 
 
 const instance = axios.create({
-    baseURL: `https://neko-cafe-back.herokuapp.com/`
+    baseURL,
+    withCredentials: true
 })
 
 // api
 export const authAPI = {
     me() {
-        return instance.get(`auth`)
+        return instance.post(`auth/me`, {})
     },
     login() {
         return instance.post(`auth`)

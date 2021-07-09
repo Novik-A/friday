@@ -8,6 +8,8 @@ import {Main} from "../Main/Main";
 import ForgotPage from "../../../d2-features/f1-auth/a3-forgot/f-1-ui/ForgotPage";
 import SetPass from "../../../d2-features/f1-auth/a3-forgot/f-1-ui/SetPass";
 import {Profile} from "../Profile/Profile";
+import TableContainer from "../../../d2-features/tabels/TableContainer";
+import CardsContainer from "../../../d2-features/cards/CardsContainer";
 
 export const PATH = {
     MAIN: "/main",
@@ -17,6 +19,8 @@ export const PATH = {
     FORGOT: "/forgot",
     SET_PASS: "/set-new-password/:token",
     PROFILE: "/profile",
+    PACKS: "/packs",
+    CARDS: "/cards"
 }
 
 export const Routes = () => {
@@ -31,6 +35,8 @@ export const Routes = () => {
                 <Route path={PATH.SET_PASS} render={() => <SetPass/>}/>
                 <Route path={PATH.PROFILE} render={() => <Profile/>}/>
                 <Route path={PATH.TEST} render={() => <TestPage/>}/>
+                <Route path={PATH.PACKS} render={() => <TableContainer/>}/>
+                <Route path={PATH.CARDS} render={() => <CardsContainer/>}/>
                 <Route render={() => <Error404/>}/>
 
             </Switch>
