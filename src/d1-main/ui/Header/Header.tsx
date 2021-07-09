@@ -2,8 +2,15 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { PATH } from "../Routes/Routes";
 import s from "./Header.module.css";
+import {logoutTC} from "../../bll/loginReducer";
+import {useDispatch} from "react-redux";
 
 export const Header = (props: HeaderPropsType) => {
+
+    const dispatch = useDispatch()
+    const logoutHandler = () => {
+        dispatch(logoutTC())
+    }
     return (
         <div className={s.header}>
             <NavLink to={PATH.MAIN} className={s.link} activeClassName={s.active}>Main</NavLink>
@@ -15,6 +22,7 @@ export const Header = (props: HeaderPropsType) => {
             {/*{!props.isLoggedIn && <NavLink to={PATH.REGISTER} className={s.link} activeClassName={s.active}>Register</NavLink>}*/}
             <NavLink to={PATH.PROFILE} className={s.link} activeClassName={s.active}>Profile</NavLink>
             <NavLink to={PATH.TEST} className={s.link} activeClassName={s.active}>TestPage</NavLink>
+            {props.isLoggedIn && <button className={s.link} onClick={logoutHandler}>Log out</button>}
             {/*<div className={s.block}/>*/}
         </div>
     );

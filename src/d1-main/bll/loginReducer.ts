@@ -62,6 +62,22 @@ export const loginTC = (loginData: LoginParamsType) => (dispatch: Dispatch<Actio
             dispatch(setAppStatusAC('failed'))
         })
 }
+export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    loginAPI.logout()
+        .then(res => {
+                dispatch(setIsLoggedInAC(false))
+                dispatch(setAppStatusAC('succeeded'))
+        })
+        .catch((e) => {
+            const error = e.response
+                ? e.response.data.error
+                : (e.message + ', more details in the console');
+            console.log('Error: ', error)
+            dispatch(forgotError(error))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
 
 export const registerTC = (registerData: RegisterParamsType) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))

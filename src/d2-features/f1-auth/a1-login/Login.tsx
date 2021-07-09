@@ -44,7 +44,7 @@ export const Login = () => {
             }
             if (!values.password) {
                 errors.password = 'Required';
-            }   else if (!/^[A-Z0-9._%+-]{5,15}$/i.test(values.password)) {
+            }   else if (!/^[A-Z0-9._%+-]{8,15}$/i.test(values.password)) {
                 errors.email = 'Invalid password';
             }
             return errors;

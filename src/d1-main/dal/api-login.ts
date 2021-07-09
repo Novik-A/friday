@@ -6,6 +6,12 @@ export const loginAPI = {
     login(data: LoginParamsType) {
         return instance.post<ResponseLoginType>(`auth/login`, data)
     },
+    me() {
+        return instance.post<ResponseLoginType>(`auth/me`, {})
+    },
+    logout() {
+        return instance.delete<ResponseType>(`auth/me`)
+    }
 }
 
 
@@ -27,5 +33,9 @@ export type ResponseLoginType = {
     verified: boolean; // подтвердил ли почту
     rememberMe: boolean;
     error?: string;
+}
+type ResponseType = {
+    info: string
+    error: string
 }
 

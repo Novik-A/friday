@@ -1,20 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Header} from "./Header/Header";
 import {Routes} from "./Routes/Routes";
 import {AppRootStateType} from '../bll/store';
-import {RequestStatusType} from "../bll/appReducer";
+import {initializeAppTC, RequestStatusType} from "../bll/appReducer";
+import {logoutTC} from "../bll/loginReducer";
 
 const App = () => {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-    // const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     dispatch(initializeAppTC())
-    // }, [])
+    useEffect(() => {
+        dispatch(initializeAppTC())
+    }, [])
+
 
     return (
         <div className="App">
