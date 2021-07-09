@@ -1,6 +1,5 @@
 import React, { useEffect} from 'react';
-import {CardsPackType, CreateParamsType, ResponsePacksType, UpdateCardsPackType} from "../../d1-main/dal/api-tabels";
-import {CardsPackType, CreateParamsType, GetPackParams, UpdateCardsPackType} from "../../d1-main/dal/api-tabels";
+import {CardsPackType, CreateParamsType, ResponsePacksType, GetPackParams, UpdateCardsPackType} from "../../d1-main/dal/api-tabels";
 import {Paper, Table, TableBody, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TableCell from "@material-ui/core/TableCell";

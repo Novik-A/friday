@@ -25,7 +25,7 @@ export type GetPackParams = {
     packName?:string
     min?:number
     max?:number
-    sortPacks?:number
+    sortPacks?:string
     page?:number
     pageCount?:number
     user_id?:string

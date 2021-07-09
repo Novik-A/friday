@@ -1,10 +1,5 @@
-import React, {useCallback, useEffect} from "react";
-import {
-    createPackTC,
-    getPackTC,
-    removePackTC,
-    updatePackTC
-} from "../../d1-main/bll/tablesReducer";
+import React, {useCallback} from "react";
+import {createPackTC, getPackTC, removePackTC, updatePackTC} from "../../d1-main/bll/tablesReducer";
 import Table from "./Tables";
 import {useDispatch, useSelector} from "react-redux";
 import {CardsPackType, CreateParamsType, GetPackParams, UpdateCardsPackType} from "../../d1-main/dal/api-tabels";
