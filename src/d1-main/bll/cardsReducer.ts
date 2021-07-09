@@ -60,10 +60,15 @@ export const getCardsTC = (getParams: GetCardsParams) => (dispatch: Dispatch) =>
         }
     )
 }
-export const createCardTC = (createData: CreateCardParamsType) => (dispatch: Dispatch) => {
+export const createCardTC = (createData: CreateCardParamsType, getParams: GetCardsParams) => (dispatch: Dispatch) => {
     cardsAPI.createCard(createData).then( res => {
             dispatch(addCardAC(res.data))
         }
+    ).then( () =>
+        cardsAPI.getCards(getParams).then(res => {
+                dispatch(getCardsAC(res.data))
+            }
+        )
     )
 }
 export const removeCardTC = (id: string, cardsPack_id: string) => (dispatch: Dispatch) => {

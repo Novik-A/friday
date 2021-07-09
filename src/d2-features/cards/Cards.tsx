@@ -2,17 +2,19 @@ import React, { useEffect} from 'react';
 import {Paper, Table, TableBody, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TableCell from "@material-ui/core/TableCell";
-import {CardType, CreateCardParamsType, UpdateCardType} from "../../d1-main/dal/api-cards";
+import {CardType, CreateCardParamsType, GetCardsParams, UpdateCardType} from "../../d1-main/dal/api-cards";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../d1-main/bll/store";
+import Button from "@material-ui/core/Button";
 
 
 type CardsPropsType = {
     cards: Array<CardType>
     getCards: (id: string) => void
-    createCard: (createData: CreateCardParamsType) => void
+    createCard: (createData: CreateCardParamsType, getParams: GetCardsParams) => void
     removeCard: (id: string, cardsPack_id: string) => void
     updateCard: (updateData: UpdateCardType, cardsPack_id: string) => void
+    packId?: string
 }
 
 const Cards = (props: CardsPropsType) => {
@@ -22,8 +24,7 @@ const Cards = (props: CardsPropsType) => {
     //     props.getCards("5eb6a2f72f849402d46c6ac4");
     // }, [])
 
-    const packId = useSelector<AppRootStateType, string>(state => state.cardReducer.cards[0]?.cardsPack_id)
-
+    const packId = useSelector<AppRootStateType, string>(state => state.tablesReducer.cardPacks[0]?._id)
     const useStyles = makeStyles({
         table: {
             minWidth: 650,
@@ -31,7 +32,7 @@ const Cards = (props: CardsPropsType) => {
     });
 
     const addCardHandler = () => {
-        props.createCard({card: {cardsPack_id: packId}})
+        props.createCard({card: {cardsPack_id: packId, question: "newQuestion", answer: 'NewAnswer'}}, {cardsPack_id: packId})
     }
     const classes = useStyles();
     return (
@@ -50,11 +51,10 @@ const Cards = (props: CardsPropsType) => {
                     <TableHead>
                         <TableRow>
                             <TableCell>question</TableCell>
-                            <TableCell align="right">answer</TableCell>
-                            <TableCell align="right">Grade</TableCell>
-                            <TableCell align="right">updated</TableCell>
-                            <TableCell align="right">url</TableCell>
-                            <TableCell align="right"><button onClick={addCardHandler}>Add Card</button> </TableCell>
+                            <TableCell align="center">answer</TableCell>
+                            <TableCell align="center">Grade</TableCell>
+                            <TableCell align="center">updated</TableCell>
+                            <TableCell align="center"><Button onClick={addCardHandler} variant="contained" color="primary">Add card</Button></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -63,16 +63,16 @@ const Cards = (props: CardsPropsType) => {
                                 props.removeCard(row._id, row.cardsPack_id)
                             }
                             const updateHandler = () => {
-                                props.updateCard({_id: row._id}, row.cardsPack_id)
+                                props.updateCard({card: {_id: row._id}}, row.cardsPack_id)
                             }
                             return (
                                 <TableRow key={row._id}>
                                     <TableCell component="th" scope="row">{row.question} </TableCell>
-                                    <TableCell align="right">{row.answer}</TableCell>
-                                    <TableCell align="right">{row.grade}</TableCell>
-                                    <TableCell align="right">{row.updated}</TableCell>
-                                    <TableCell align="right"><button onClick={removeHandler}>remove</button></TableCell>
-                                    <TableCell align="right"><button onClick={updateHandler}>update</button></TableCell>
+                                    <TableCell align="center">{row.answer}</TableCell>
+                                    <TableCell align="center">{row.grade}</TableCell>
+                                    <TableCell align="center">{row.updated}</TableCell>
+                                    <TableCell align="center"><Button onClick={removeHandler} variant="contained" color="primary">remove</Button></TableCell>
+                                    <TableCell align="center"><Button onClick={updateHandler} variant="contained" color="primary">update</Button></TableCell>
                                 </TableRow>
                             )
                         }

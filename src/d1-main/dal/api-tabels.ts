@@ -3,8 +3,8 @@ import {instance} from "./base-url";
 
 // api
 export const tablesAPI = {
-    getCardsPack(cardsParams: CardsParams) {
-        return instance.get<ResponsePacksType>(`cards/pack`, {params: {...cardsParams}})
+    getCardsPack(getPackParams: GetPackParams) {
+        return instance.get<ResponsePacksType>(`cards/pack`, {params: {...getPackParams}})
     },
     createCardsPack(createData: CreateParamsType) {
         return instance.post<CardsPackType>('cards/pack', {...createData})
@@ -20,6 +20,17 @@ export const tablesAPI = {
 
 // types
 export type TypeCardsPackType = 'pack' | 'folder'
+
+export type GetPackParams = {
+    packName?:string
+    min?:number
+    max?:number
+    sortPacks?:number
+    page?:number
+    pageCount?:number
+    user_id?:string
+}
+
 export type CardsPackType = {
     _id: string
     user_id: string
@@ -64,14 +75,16 @@ export type ResponsePacksType = {
 }
 
 export type CreateParamsType = {
-    name?: string
-    path?: string
-    grade?: number
-    shots?: number
-    rating?: number
-    deckCover?: string
-    private?: boolean
-    type?: TypeCardsPackType
+    cardsPack: {
+        name?: string
+        path?: string
+        grade?: number
+        shots?: number
+        rating?: number
+        deckCover?: string
+        private?: boolean
+        type?: TypeCardsPackType
+    }
 }
 export type CardsParams = {
     packName?: string

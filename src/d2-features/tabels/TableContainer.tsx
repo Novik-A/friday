@@ -7,38 +7,40 @@ import {
 } from "../../d1-main/bll/tablesReducer";
 import Table from "./Tables";
 import {useDispatch, useSelector} from "react-redux";
-import {CardsPackType, CreateParamsType, UpdateCardsPackType} from "../../d1-main/dal/api-tabels";
+import {CardsPackType, CreateParamsType, GetPackParams, UpdateCardsPackType} from "../../d1-main/dal/api-tabels";
 import {AppRootStateType} from "../../d1-main/bll/store";
 import {getCardsTC} from "../../d1-main/bll/cardsReducer";
 import {Redirect} from "react-router";
 
+type PropsType = {
+    userId?: string
+}
 
-
-const TableContainer = () => {
+const TableContainer = (props: PropsType) => {
 
     const dispatch = useDispatch()
 
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
 
-    const packs = useSelector<AppRootStateType, Array<CardsPackType>>(state => state.tablesReducer.cardPacks)
-    const getPack = useCallback(function () {
-        const thunk = getPackTC()
+    let packs = useSelector<AppRootStateType, Array<CardsPackType>>(state => state.tablesReducer.cardPacks)
+    const getPack = useCallback(function (getPackParams: GetPackParams) {
+        const thunk = getPackTC(getPackParams)
         dispatch(thunk)
     }, [])
     const getCards = useCallback(function (id: string) {
         const thunk = getCardsTC({cardsPack_id: id})
         dispatch(thunk)
     }, [])
-    const createPack = useCallback(function (newPackData: CreateParamsType) {
-        const thunk = createPackTC(newPackData)
+    const createPack = useCallback(function (newPackData: CreateParamsType, getPackParams: GetPackParams) {
+        const thunk = createPackTC(newPackData, getPackParams)
         dispatch(thunk)
     }, [])
-    const removePack = useCallback(function (id: string) {
-        const thunk = removePackTC(id)
+    const removePack = useCallback(function (id: string, getPackParams: GetPackParams) {
+        const thunk = removePackTC(id, getPackParams)
         dispatch(thunk)
     }, [])
-    const updatePack = useCallback(function (updateData: UpdateCardsPackType) {
-        const thunk = updatePackTC(updateData)
+    const updatePack = useCallback(function (updateData: UpdateCardsPackType, getPackParams: GetPackParams) {
+        const thunk = updatePackTC(updateData, getPackParams)
         dispatch(thunk)
     }, [])
 
@@ -54,6 +56,7 @@ const TableContainer = () => {
             createPack={createPack}
             removePack={removePack}
             updatePack={updatePack}
+            userId={props.userId}
         />
     </div>
 }
