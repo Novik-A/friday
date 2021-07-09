@@ -45,19 +45,21 @@ export type CardType = {
         _id: string
 }
 export type UpdateCardType = {
-    _id: string
-    answer?: string
-    question?: string
-    cardsPack_id?: string
-    grade?: number
-    rating?: number
-    shots?: number
-    type?: string
-    user_id?: string
-    created?: string
-    updated?: string
-    __v?: number
-    comments?: string
+    card: {
+        _id: string
+        answer?: string
+        question?: string
+        cardsPack_id?: string
+        grade?: number
+        rating?: number
+        shots?: number
+        type?: string
+        user_id?: string
+        created?: string
+        updated?: string
+        __v?: number
+        comments?: string
+    }
 }
 export type ResponseCardsType = {
     cards: Array<CardType>

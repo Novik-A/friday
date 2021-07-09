@@ -63,7 +63,7 @@ const Cards = (props: CardsPropsType) => {
                                 props.removeCard(row._id, row.cardsPack_id)
                             }
                             const updateHandler = () => {
-                                props.updateCard({_id: row._id}, row.cardsPack_id)
+                                props.updateCard({card: {_id: row._id}}, row.cardsPack_id)
                             }
                             return (
                                 <TableRow key={row._id}>
