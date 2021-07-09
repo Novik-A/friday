@@ -1,5 +1,12 @@
 import {Dispatch} from 'redux'
-import {CardsPackType, CreateParamsType, ResponsePacksType, tablesAPI, UpdateCardsPackType} from '../dal/api-tabels'
+import {
+    CardsPackType,
+    CreateParamsType,
+    GetPackParams,
+    ResponsePacksType,
+    tablesAPI,
+    UpdateCardsPackType
+} from '../dal/api-tabels'
 
 const initialState = {
     cardPacks: [
@@ -47,29 +54,34 @@ export type GetPackActionType = ReturnType<typeof getPackAC>
 export type CreatePackActionType = ReturnType<typeof addPackAC>
 export type ActionsTableType = GetPackActionType | CreatePackActionType
 
-export const getPackTC = () => (dispatch: Dispatch) => {
-    tablesAPI.getCardsPack().then( res => {
+export const getPackTC = (getPackParams: GetPackParams) => (dispatch: Dispatch) => {
+    tablesAPI.getCardsPack(getPackParams).then( res => {
             dispatch(getPackAC(res.data))
         }
     )
 }
-export const createPackTC = (newPackData: CreateParamsType) => (dispatch: Dispatch) => {
+export const createPackTC = (newPackData: CreateParamsType, getPackParams: GetPackParams) => (dispatch: Dispatch) => {
     tablesAPI.createCardsPack(newPackData).then( res => {
-            dispatch(addPackAC(res.data))
+        dispatch(addPackAC(res.data))
         }
-    )
-}
-export const removePackTC = (id: string) => (dispatch: Dispatch) => {
-    tablesAPI.deletePack(id).then(() =>
-        tablesAPI.getCardsPack().then(res => {
+    ).then( () =>
+        tablesAPI.getCardsPack(getPackParams).then(res => {
                 dispatch(getPackAC(res.data))
             }
         )
     )
 }
-export const updatePackTC = (updateData: UpdateCardsPackType) => (dispatch: Dispatch) => {
+export const removePackTC = (id: string, getPackParams: GetPackParams) => (dispatch: Dispatch) => {
+    tablesAPI.deletePack(id).then(() =>
+        tablesAPI.getCardsPack(getPackParams).then(res => {
+                dispatch(getPackAC(res.data))
+            }
+        )
+    )
+}
+export const updatePackTC = (updateData: UpdateCardsPackType, getPackParams: GetPackParams) => (dispatch: Dispatch) => {
     tablesAPI.updatePack(updateData).then( () =>
-        tablesAPI.getCardsPack().then(res => {
+        tablesAPI.getCardsPack(getPackParams).then(res => {
                 dispatch(getPackAC(res.data))
             }
         )

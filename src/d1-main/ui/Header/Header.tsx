@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useCallback} from "react";
 import { NavLink } from "react-router-dom";
 import { PATH } from "../Routes/Routes";
 import s from "./Header.module.css";
 
 export const Header = (props: HeaderPropsType) => {
+
     return (
         <div className={s.header}>
             <NavLink to={PATH.MAIN} className={s.link} activeClassName={s.active}>Main</NavLink>
