@@ -15,6 +15,8 @@ export const Header = (props: HeaderPropsType) => {
             {/*{!props.isLoggedIn && <NavLink to={PATH.REGISTER} className={s.link} activeClassName={s.active}>Register</NavLink>}*/}
             <NavLink to={PATH.PROFILE} className={s.link} activeClassName={s.active}>Profile</NavLink>
             <NavLink to={PATH.TEST} className={s.link} activeClassName={s.active}>TestPage</NavLink>
+            <NavLink to={PATH.PACKS} className={s.link} activeClassName={s.active}>Packs</NavLink>
+            <NavLink to={PATH.CARDS} className={s.link} activeClassName={s.active}>Cards</NavLink>
             {/*<div className={s.block}/>*/}
         </div>
     );

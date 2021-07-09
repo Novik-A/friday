@@ -2,7 +2,7 @@ import { Router } from 'react-router-dom';
 import {Dispatch} from 'redux'
 import {loginAPI, LoginParamsType, ResponseLoginType } from '../dal/api-login';
 import {registerAPI, RegisterParamsType, ResponseRegisterType} from "../dal/api-register";
-import { setIsLoggedInAC } from './authReducer';
+import {setIsAuthAC, setIsAuthActionType, setIsLoggedInAC, setIsLoggedInActionType } from './authReducer';
 import { push } from 'react-router-redux';
 import {setAppStatusAC, SetAppStatusActionType} from "./appReducer";
 import {FogotErrorActionType, forgotError} from "../../d2-features/f1-auth/a3-forgot/f-2-bll/b-2-redux/forgotReducer";
@@ -88,5 +88,5 @@ type InitialStateType = {
 type RegisterActionType = ReturnType<typeof registerAC>
 type loginActionType = ReturnType<typeof loginAC>
 type IsRegisteredActionType = ReturnType<typeof isRegisteredAC>
-type ActionsType = loginActionType | RegisterActionType | setIsLoggedInAC
-    | IsRegisteredActionType | SetAppStatusActionType | FogotErrorActionType
+type ActionsType = loginActionType | RegisterActionType | setIsLoggedInActionType
+    | IsRegisteredActionType | SetAppStatusActionType | FogotErrorActionType | setIsAuthActionType
