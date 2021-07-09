@@ -5,7 +5,6 @@ import {Header} from "./Header/Header";
 import {Routes} from "./Routes/Routes";
 import {AppRootStateType} from '../bll/store';
 import {initializeAppTC, RequestStatusType} from "../bll/appReducer";
-import {logoutTC} from "../bll/loginReducer";
 
 const App = () => {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
