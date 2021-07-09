@@ -1,11 +1,5 @@
-import axios from 'axios'
-import {baseURL} from "./base-url";
+import {instance} from "./base-url";
 
-
-const instance = axios.create({
-    baseURL,
-    withCredentials: true
-})
 
 // api
 export const authAPI = {

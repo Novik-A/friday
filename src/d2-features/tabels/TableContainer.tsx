@@ -20,7 +20,7 @@ const TableContainer = () => {
 
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
 
-    let packs = useSelector<AppRootStateType, Array<CardsPackType>>(state => state.tablesReducer.cardPacks)
+    const packs = useSelector<AppRootStateType, Array<CardsPackType>>(state => state.tablesReducer.cardPacks)
     const getPack = useCallback(function () {
         const thunk = getPackTC()
         dispatch(thunk)

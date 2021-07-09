@@ -1,5 +1,6 @@
 import {Dispatch} from 'redux'
-import {CardsPackType, CreateParamsType, ResponsePacksType, tablesAPI, UpdateCardsPackType} from '../dal/api-tabels'
+import {CardsPackType, CardsParams, CreateParamsType, ResponsePacksType, tablesAPI, UpdateCardsPackType} from '../dal/api-tabels'
+import {AppRootStateType} from "./store";
 
 const initialState = {
     cardPacks: [
@@ -22,10 +23,17 @@ const initialState = {
     maxCardsCount: 4,
     minCardsCount: 0,
     page: 1,
-    pageCount: 4
+    pageCount: 4,
+    token: '',
+    tokenDeathTime: 0,
+    sortPacks: '',
+    packName: '',
+    minParam: 0,
+    maxParam: 103,
+    user_id: ''
 }
 
-export const tablesReducer = (state: ResponsePacksType = initialState, action: ActionsTableType) => {
+export const tablesReducer = (state: ResponsePacksType = initialState, action: ActionsTableType):ResponsePacksType => {
     switch (action.type) {
         case "GET_PACKS": {
             return {...action.packs}
@@ -35,20 +43,37 @@ export const tablesReducer = (state: ResponsePacksType = initialState, action: A
             newState.cardPacks.push(action.pack)
             return {...newState}
         }
+        case 'UPDATE_VALUES':
+            return {...state, ...action.payload}
     }
     return state
 }
 
 const getPackAC = (packs: ResponsePacksType) => ({type: "GET_PACKS", packs} as const)
 const addPackAC = (pack: CardsPackType) => ({type: "CREATE_NEW_PACK", pack} as const)
+export const updateValuesAC = (payload: SetValuesType) => ({
+    type: 'UPDATE_VALUES',
+    payload
+} as const)
 
 
 export type GetPackActionType = ReturnType<typeof getPackAC>
 export type CreatePackActionType = ReturnType<typeof addPackAC>
-export type ActionsTableType = GetPackActionType | CreatePackActionType
+export type ActionsTableType = GetPackActionType | CreatePackActionType | ReturnType<typeof updateValuesAC>
 
-export const getPackTC = () => (dispatch: Dispatch) => {
-    tablesAPI.getCardsPack().then( res => {
+export const getPackTC = (params: CardsParams = {}) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    const tablesReducer = getState().tablesReducer
+    const cardsParamsModel: CardsParams = {
+        packName: tablesReducer.packName,
+        min: tablesReducer.minParam,
+        max: tablesReducer.maxParam,
+        sortPacks: tablesReducer.sortPacks,
+        page: tablesReducer.page,
+        pageCount: tablesReducer.pageCount,
+        user_id: tablesReducer.user_id,
+        ...params
+    }
+    tablesAPI.getCardsPack(cardsParamsModel).then( res => {
             dispatch(getPackAC(res.data))
         }
     )
@@ -61,7 +86,7 @@ export const createPackTC = (newPackData: CreateParamsType) => (dispatch: Dispat
 }
 export const removePackTC = (id: string) => (dispatch: Dispatch) => {
     tablesAPI.deletePack(id).then(() =>
-        tablesAPI.getCardsPack().then(res => {
+        tablesAPI.getCardsPack({}).then(res => {
                 dispatch(getPackAC(res.data))
             }
         )
@@ -69,9 +94,19 @@ export const removePackTC = (id: string) => (dispatch: Dispatch) => {
 }
 export const updatePackTC = (updateData: UpdateCardsPackType) => (dispatch: Dispatch) => {
     tablesAPI.updatePack(updateData).then( () =>
-        tablesAPI.getCardsPack().then(res => {
+        tablesAPI.getCardsPack({}).then(res => {
                 dispatch(getPackAC(res.data))
             }
         )
     )
+}
+
+export type SetValuesType = {
+    minCardsCount?: number,
+    maxCardsCount?: number,
+    sortPacks?: string,
+    page?: number,
+    pageCount?: number,
+    packName?: string,
+    user_id?: string
 }

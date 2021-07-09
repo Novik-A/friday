@@ -18,9 +18,9 @@ type CardsPropsType = {
 const Cards = (props: CardsPropsType) => {
 
 
-    useEffect( () => {
-        props.getCards("5eb6a2f72f849402d46c6ac4");
-    }, [])
+    // useEffect( () => {
+    //     props.getCards("5eb6a2f72f849402d46c6ac4");
+    // }, [])
 
     const packId = useSelector<AppRootStateType, string>(state => state.cardReducer.cards[0]?.cardsPack_id)
 

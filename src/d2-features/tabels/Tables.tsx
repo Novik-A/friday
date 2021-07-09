@@ -1,9 +1,13 @@
 import React, { useEffect} from 'react';
-import {CardsPackType, CreateParamsType, UpdateCardsPackType} from "../../d1-main/dal/api-tabels";
+import {CardsPackType, CreateParamsType, ResponsePacksType, UpdateCardsPackType} from "../../d1-main/dal/api-tabels";
 import {Paper, Table, TableBody, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TableCell from "@material-ui/core/TableCell";
 import { useHistory } from "react-router-dom";
+import {Paginator} from "../../d1-main/ui/components/c-2 Paginator/Paginator";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../d1-main/bll/store";
+import {getPackTC, SetValuesType, updateValuesAC} from "../../d1-main/bll/tablesReducer";
 
 
 type TablePropsType = {
@@ -17,9 +21,17 @@ type TablePropsType = {
 
 const Tables = (props: TablePropsType) => {
     const history = useHistory();
+    const dispatch = useDispatch()
     useEffect( () => {
         props.getPack();
     }, [])
+    const packsState = useSelector<AppRootStateType, ResponsePacksType>(state => state.tablesReducer)
+    const setParams = (requestParams: SetValuesType) => {
+        dispatch(updateValuesAC(requestParams))
+        dispatch(getPackTC())
+    }
+
+    const pageNumberRequest = (page: number) => setParams({page})
 
     const useStyles = makeStyles({
         table: {
@@ -85,6 +97,12 @@ const Tables = (props: TablePropsType) => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Paginator totalItemsCount={packsState.cardPacksTotalCount}
+                       pageSize={packsState.pageCount}
+                       currentPage={packsState.page}
+                       // disabled={}
+                       onPageNumberClick={pageNumberRequest}
+            />
             <div style={{ height: 400, width: '100%' }}>
             </div>
         </div>
