@@ -6,6 +6,7 @@ import {CardType, CreateCardParamsType, GetCardsParams, UpdateCardType} from "..
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../d1-main/bll/store";
 import Button from "@material-ui/core/Button";
+import {SearchForCards} from "../../d1-main/ui/components/c-5 Search/SearchForCards";
 
 
 type CardsPropsType = {
@@ -46,6 +47,7 @@ const Cards = (props: CardsPropsType) => {
                 justifyContent: 'center'
             }}
         >
+            <SearchForCards searchCallback={props.getCards} disabled={false}/>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>

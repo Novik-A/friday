@@ -16,8 +16,8 @@
 
 .searchBarBtn {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 21px;
+    right: -19px;
     width: 36px;
     height: 36px;
     border: none;

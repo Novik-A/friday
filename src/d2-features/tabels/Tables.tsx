@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../d1-main/bll/store";
 import {getPackTC, SetValuesType, updateValuesAC} from "../../d1-main/bll/tablesReducer";
 import Button from "@material-ui/core/Button";
+import {Search} from "../../d1-main/ui/components/c-5 Search/Search";
 
 
 type TablePropsType = {
@@ -53,6 +54,7 @@ const Tables = (props: TablePropsType) => {
                 justifyContent: 'center'
             }}
         >
+            <Search searchCallback={props.getPack} disabled={false}/>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
