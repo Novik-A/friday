@@ -1,30 +1,16 @@
 .header {
     display: flex;
-    /*width: 320px;*/
-    /*transition-duration: 500ms;*/
-    /*transform: translate(-280px);*/
-}
-.header:hover {
-    /*transition-duration: 500ms;*/
-    /*transform: translate(0);*/
 }
 
 .link {
     text-decoration: none;
-    color: #7af;
+    color: grey;
     margin: 10px;
 }
 .link:hover {
-    color: #c9f;
+    color: #00f;
 }
 
 .active {
-    color: #5ff;
-}
-
-.block {
-    width: 21px;
-    height: 21px;
-    margin: 10px;
-    background: #41b883;
+    color: #000;
 }

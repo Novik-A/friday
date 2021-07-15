@@ -1,8 +1,7 @@
-import { AxiosError } from 'axios';
 import {Dispatch} from 'redux'
 import {authAPI} from "../dal/api";
-import {loginAPI} from "../dal/api-login";
-import {forgotError} from "../../d2-features/f1-auth/a3-forgot/f-2-bll/b-2-redux/forgotReducer";
+import {forgotError} from "./forgotReducer";
+import {setIsLoggedInAC} from "./authReducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -33,14 +32,12 @@ export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP/SET-I
 // thunks
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    loginAPI.me().then(res => {
+    authAPI.me().then(res => {
         // if (res.data.resultCode === 0) {
-            // dispatch(setIsLoggedInAC(true))
+            dispatch(setIsInitializedAC(true))
+            dispatch(setIsLoggedInAC(true))
             dispatch(setAppStatusAC('succeeded'))
         console.log(res)
-        // } else {
-            // handleServerAppError(dispatch, res.data)
-        // }
     })
         .catch((e) => {
             const error = e.response

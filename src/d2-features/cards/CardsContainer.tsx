@@ -12,7 +12,7 @@ type PropsType = {
 
 const CardsContainer = (props: PropsType) => {
 
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
     const dispatch = useDispatch()
 

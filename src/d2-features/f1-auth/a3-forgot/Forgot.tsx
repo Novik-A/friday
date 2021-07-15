@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import s from './Forgot.module.css';
-import SuperInputText from "../../../../d1-main/ui/common/c1-SuperInputText/SuperInputText";
-import SuperButton from "../../../../d1-main/ui/common/c2-SuperButton/SuperButton";
-import {PATH} from "../../../../d1-main/ui/Routes/Routes";
+import SuperInputText from "../../../d1-main/ui/common/c1-SuperInputText/SuperInputText";
+import SuperButton from "../../../d1-main/ui/common/c2-SuperButton/SuperButton";
+import {PATH} from "../../../d1-main/ui/Routes/Routes";
 import {NavLink} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {forgotError, forgotTC} from "../f-2-bll/b-2-redux/forgotReducer";
+import {forgotError, forgotTC} from "../../../d1-main/bll/forgotReducer";
 
 
 type ForgotProps = {

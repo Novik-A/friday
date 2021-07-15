@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
-import {ForgotAPI, ForgotParamsType, SetPassParamsType} from "../../f-3-dal/ForgotAPI";
-import {setAppStatusAC, SetAppStatusActionType} from "../../../../../d1-main/bll/appReducer";
+import {setAppStatusAC, SetAppStatusActionType} from "./appReducer";
+import {forgotAPI, ForgotParamsType, SetPassParamsType} from "../dal/api";
 
 const FORGOT_LOADING = 'FORGOT/LOADING';
 const FORGOT_ERROR = 'FORGOT/ERROR';
@@ -48,7 +48,7 @@ export const forgotTC = (email: string) => (dispatch: Dispatch<ActionsType>) => 
         message: `<div style="background-color: lime; padding: 15px">password recovery link: 
                 <a href='http://localhost:3000/#/set-new-password/$token$'>link</a></div>`
     }
-    ForgotAPI.forgot(forgotData)
+    forgotAPI.forgot(forgotData)
         .then(res => {
             dispatch(forgotSuccess(forgotData.email))
             dispatch(setAppStatusAC('succeeded'))
@@ -65,7 +65,7 @@ export const forgotTC = (email: string) => (dispatch: Dispatch<ActionsType>) => 
 
 export const setPassTC = (data: SetPassParamsType) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-    ForgotAPI.setPass(data)
+    forgotAPI.setPass(data)
         .then(res => {
             dispatch(setPassSuccess())
             dispatch(setAppStatusAC('succeeded'))
@@ -83,9 +83,9 @@ export const setPassTC = (data: SetPassParamsType) => (dispatch: Dispatch<Action
 
 // types
 type InitialStateType = typeof forgotInitialState
-export type FogotErrorActionType = ReturnType<typeof forgotError>
+export type ForgotErrorActionType = ReturnType<typeof forgotError>
 
 type ActionsType = ReturnType<typeof forgotSuccess>
-    | FogotErrorActionType
+    | ForgotErrorActionType
     | ReturnType<typeof setPassSuccess>
     | SetAppStatusActionType

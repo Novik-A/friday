@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {loginTC} from "../../../d1-main/bll/loginReducer";
+import {loginTC} from "../../../d1-main/bll/authReducer";
 import {useFormik} from "formik";
-import s from '../a3-forgot/f-1-ui/Forgot.module.css';
+import s from '../a3-forgot/Forgot.module.css';
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../../d1-main/ui/Routes/Routes";
 import SuperInputText from "../../../d1-main/ui/common/c1-SuperInputText/SuperInputText";
@@ -11,12 +11,12 @@ import {AppRootStateType} from "../../../d1-main/bll/store";
 import {Redirect} from "react-router";
 import SuperButton from "../../../d1-main/ui/common/c2-SuperButton/SuperButton";
 import SuperCheckbox from "../../../d1-main/ui/common/c3-SuperCheckbox/SuperCheckbox";
-import {forgotError} from "../a3-forgot/f-2-bll/b-2-redux/forgotReducer";
+import {forgotError} from "../../../d1-main/bll/forgotReducer";
 
 
 export const Login = () => {
     const dispatch = useDispatch()
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const error = useSelector<AppRootStateType, string>(state => state.forgot.error)
 
     useEffect(() => {

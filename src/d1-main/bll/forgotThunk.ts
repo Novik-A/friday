@@ -1,10 +1,9 @@
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {IForgotActions} from "./b-2-redux/forgotActions";
-import {ForgotAPI} from "../f-3-dal/ForgotAPI";
-import {AppRootStateType} from "../../../../d1-main/bll/store";
+import {AppRootStateType} from "./store";
 
 type Return = void;
 type ExtraArgument = {};
+type IForgotActions = { type: string };
 type IGetStore = () => AppRootStateType;
 
 export const forgot = (email: string): ThunkAction<Return, AppRootStateType, ExtraArgument, IForgotActions> =>

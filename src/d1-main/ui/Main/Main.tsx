@@ -4,7 +4,7 @@ import {initializeAppTC} from "../../bll/appReducer";
 import {AppRootStateType} from "../../bll/store";
 
 export const Main = () => {
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.loginRegister.isLoggedIn)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
     const authHandler = () => {
