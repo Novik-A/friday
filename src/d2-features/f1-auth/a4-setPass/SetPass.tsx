@@ -10,7 +10,6 @@ import {useParams, withRouter } from 'react-router-dom';
 
 const SetPass: React.FC = () => {
     const {token} = useParams<{token: string}>()
-    debugger
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(forgotError(''))
@@ -35,7 +34,7 @@ const SetPass: React.FC = () => {
         }
     }
 
-    if (setNewPass || !isLoggedIn) {
+    if (setNewPass) {
         return <Redirect to={'/login'}/>
     }
 

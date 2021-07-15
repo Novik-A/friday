@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux'
 import {authAPI} from "../dal/api";
 import {forgotError} from "./forgotReducer";
-import {setIsLoggedInAC} from "./authReducer";
+import {loginAC, setIsLoggedInAC} from "./authReducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -33,11 +33,9 @@ export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP/SET-I
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.me().then(res => {
-        // if (res.data.resultCode === 0) {
-            dispatch(setIsInitializedAC(true))
-            dispatch(setIsLoggedInAC(true))
-            dispatch(setAppStatusAC('succeeded'))
-        console.log(res)
+        dispatch(setIsInitializedAC(true))
+        dispatch(loginAC(res.data))
+        dispatch(setAppStatusAC('succeeded'))
     })
         .catch((e) => {
             const error = e.response

@@ -14,7 +14,6 @@ type ForgotProps = {
 
 const Forgot: React.FC<ForgotProps> = ({error}) => {
 
-    console.log('render Forgot');
     useEffect(() => {
         dispatch(forgotError(''))
     }, [])

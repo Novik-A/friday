@@ -1,5 +1,5 @@
 .container {
-    height: 30vh;
+    height: 12vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7,7 +7,7 @@
 
 .slider {
     position: relative;
-    width: 200px;
+    width: 400px;
 }
 
 .slider__track,
@@ -24,19 +24,19 @@
 }
 
 .slider__track {
-    background-color: #ced4da;
+    background-color: #fff;
     width: 100%;
     z-index: 1;
 }
 
 .slider__range {
-    background-color: #9fe5e1;
+    background-color: #21268F;
     z-index: 2;
 }
 
 .slider__left-value,
 .slider__right-value {
-    color: #dee2e6;
+    color: #000;
     font-size: 12px;
     margin-top: 20px;
 }
@@ -60,7 +60,7 @@
     pointer-events: none;
     position: absolute;
     height: 0;
-    width: 200px;
+    width: 400px;
     outline: none;
 }
 
@@ -98,4 +98,23 @@
     margin-top: 4px;
     pointer-events: all;
     position: relative;
+}
+
+.sliderSearchBtn {
+    position: absolute;
+    top: -14px;
+    right: -70px;
+    width: 56px;
+    height: 36px;
+    border: none;
+    background-color: #21268F;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+.sliderSearchBtn::before {
+    content: "\27A5";
+    font-size: 14px;
+    color: #ECECF9;
 }

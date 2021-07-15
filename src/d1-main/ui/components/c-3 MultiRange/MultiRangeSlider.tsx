@@ -7,14 +7,18 @@ import React, {
     useRef
 } from "react";
 import "./multiRangeSlider.css";
+import s from "../c-5 Search/Search.module.css";
+import {GetPackParams} from "../../../dal/api-tabels";
 
 interface MultiRangeSliderProps {
+    searchCallback: (getPackParams: GetPackParams) => void
     min: number;
     max: number;
     onChange: Function;
 }
 
 const MultiRangeSlider: FC<MultiRangeSliderProps> = ({
+                                                         searchCallback,
                                                          min,
                                                          max,
                                                          onChange
@@ -24,6 +28,9 @@ const MultiRangeSlider: FC<MultiRangeSliderProps> = ({
     const minValRef = useRef(min);
     const maxValRef = useRef(max);
     const range = useRef<HTMLDivElement>(null);
+    const onClickCB = () => {
+        searchCallback({min: minVal, max: maxVal})
+    }
 
     // Convert to percentage
     const getPercent = useCallback(
@@ -90,6 +97,7 @@ const MultiRangeSlider: FC<MultiRangeSliderProps> = ({
                 <div ref={range} className="slider__range"></div>
                 <div className="slider__left-value">{minVal}</div>
                 <div className="slider__right-value">{maxVal}</div>
+                <button className="sliderSearchBtn" onClick={onClickCB} />
             </div>
         </div>
     );

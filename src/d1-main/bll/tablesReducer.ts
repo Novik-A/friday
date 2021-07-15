@@ -8,6 +8,7 @@ import {
     UpdateCardsPackType
 } from '../dal/api-tabels'
 import {AppRootStateType} from './store'
+import {setAppStatusAC} from "./appReducer";
 
 const initialState = {
     cardPacks: [
@@ -69,6 +70,7 @@ export type CreatePackActionType = ReturnType<typeof addPackAC>
 export type ActionsTableType = GetPackActionType | CreatePackActionType | ReturnType<typeof updateValuesAC>
 
 export const getPackTC = (params: GetPackParams = {}) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    dispatch(setAppStatusAC('loading'))
     const tablesReducer = getState().tablesReducer
     const cardsParamsModel: GetPackParams = {
         packName: tablesReducer.packName,
@@ -82,6 +84,7 @@ export const getPackTC = (params: GetPackParams = {}) => (dispatch: Dispatch, ge
     }
     tablesAPI.getCardsPack(cardsParamsModel).then(res => {
             dispatch(getPackAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
         }
     )
 }

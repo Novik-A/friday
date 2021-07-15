@@ -18,11 +18,11 @@
     position: absolute;
     top: 21px;
     right: -19px;
-    width: 36px;
+    width: 56px;
     height: 36px;
     border: none;
     background-color: #21268F;
-    border-radius: 0 5px 5px 0;
+    border-radius: 5px;
     cursor: pointer;
     opacity: 0.85;
 }
