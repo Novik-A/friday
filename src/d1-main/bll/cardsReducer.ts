@@ -7,6 +7,7 @@ import {
     ResponseCardsType,
     UpdateCardType
 } from '../dal/api-cards'
+import {setAppStatusAC} from "./appReducer";
 
 const initialState = {
     cards: [
@@ -55,34 +56,45 @@ export type CreateCardActionType = ReturnType<typeof addCardAC>
 export type ActionsCardsType = GetCardsActionType | CreateCardActionType
 
 export const getCardsTC = (getParams: GetCardsParams) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     cardsAPI.getCards(getParams).then( res => {
             dispatch(getCardsAC(res.data))
+        dispatch(setAppStatusAC('succeeded'))
         }
     )
 }
 export const createCardTC = (createData: CreateCardParamsType, getParams: GetCardsParams) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     cardsAPI.createCard(createData).then( res => {
             dispatch(addCardAC(res.data))
+        dispatch(setAppStatusAC('succeeded'))
         }
-    ).then( () =>
-        cardsAPI.getCards(getParams).then(res => {
-                dispatch(getCardsAC(res.data))
-            }
-        )
+    ).then( () => {
+            dispatch(setAppStatusAC('loading'))
+            cardsAPI.getCards(getParams).then(res => {
+                    dispatch(getCardsAC(res.data))
+                dispatch(setAppStatusAC('succeeded'))
+                }
+            )
+        }
     )
 }
 export const removeCardTC = (id: string, cardsPack_id: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     cardsAPI.deleteCard(id).then(() =>
         cardsAPI.getCards({cardsPack_id}).then(res => {
                 dispatch(getCardsAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
             }
         )
     )
 }
 export const updateCardTC = (updateData: UpdateCardType, cardsPack_id: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     cardsAPI.updateCard(updateData).then( () =>
         cardsAPI.getCards({cardsPack_id}).then(res => {
                 dispatch(getCardsAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
             }
         )
     )

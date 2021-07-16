@@ -9,7 +9,9 @@ import Button from "@material-ui/core/Button";
 import {SearchForCards} from "../../d1-main/ui/components/c-5 Search/SearchForCards";
 import {Preloader} from "../../d1-main/ui/components/c-1 Preloader/Preloader";
 import {RequestStatusType} from "../../d1-main/bll/appReducer";
-import {AddCardModal} from '../../d1-main/ui/components/c6-Modals/AddCardModal';
+import {AddModal} from '../../d1-main/ui/components/c6-Modals/AddModal';
+import {DeleteModal} from "../../d1-main/ui/components/c6-Modals/DeleteModal";
+import {EditModal} from "../../d1-main/ui/components/c6-Modals/EditModal";
 
 
 type CardsPropsType = {
@@ -29,8 +31,13 @@ const Cards = (props: CardsPropsType) => {
     // }, [])
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const userId = useSelector<AppRootStateType, string>(state => state.auth.userData._id)
+    const packUserId = useSelector<AppRootStateType, string>(state => state.cardReducer.packUserId)
     const packId = useSelector<AppRootStateType, string>(state => state.tablesReducer.cardPacks[0]?._id)
-    const [showModal, setShowModal] = useState(false)
+    const [showAddModal, setShowAddModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [id, setId] = useState('')
+    const [cardsPackId, setCardsPackId] = useState('')
     const [question, setQuestion] = useState('')
     const [answer, setAnswer] = useState('')
     const [errorQuestion, setErrorQuestion] = useState('')
@@ -42,13 +49,13 @@ const Cards = (props: CardsPropsType) => {
     });
 
     const addCardHandler = () => {
-        if(question.length === 0 || question.length > 50) {
+        if (question.length === 0 || question.length > 50) {
             setErrorQuestion('Question myst be between 1 and 50 characters')
-        } else if(answer.length === 0 || answer.length > 50) {
+        } else if (answer.length === 0 || answer.length > 50) {
             setErrorAnswer('Answer myst be between 1 and 50 characters')
         } else {
             props.createCard({card: {cardsPack_id: packId, question: question, answer: answer}}, {cardsPack_id: packId})
-            setShowModal(false)
+            setShowAddModal(false)
             setQuestion('')
             setAnswer('')
             setErrorQuestion('')
@@ -56,7 +63,7 @@ const Cards = (props: CardsPropsType) => {
         }
     }
     const close = () => {
-        setShowModal(false)
+        setShowAddModal(false)
         setQuestion('')
         setAnswer('')
         setErrorQuestion('')
@@ -69,6 +76,20 @@ const Cards = (props: CardsPropsType) => {
     const onChangeAnswer = (e: ChangeEvent<HTMLInputElement>) => {
         setAnswer(e.currentTarget.value)
         if (errorAnswer && answer.length <= 50) setErrorAnswer('')
+    }
+    const removeHandler = () => {
+        props.removeCard(id, cardsPackId)
+        setShowDeleteModal(false)
+        setQuestion('')
+        setAnswer('')
+    }
+    const updateHandler = () => {
+        props.updateCard({card: {_id: id}}, cardsPackId)
+        setShowEditModal(false)
+        setQuestion('')
+        setAnswer('')
+        setErrorQuestion('')
+        setErrorAnswer('')
     }
     const classes = useStyles();
     return (
@@ -83,17 +104,38 @@ const Cards = (props: CardsPropsType) => {
             }}
         >
             {status === 'loading' && <Preloader left={'40%'} top={'40%'} size={'200px'}/>}
-            <AddCardModal
-                open={showModal}
+            <AddModal
+                title={"Add new card"}
+                label={"Question"}
+                labelTwo={"Answer"}
+                open={showAddModal}
                 close={close}
-                errorQuestion={errorQuestion}
-                errorAnswer={errorAnswer}
-                valueQuestion={question}
-                onChangeQuestion={onChangeQuestion}
-                valueAnswer={answer}
-                onChangeAnswer={onChangeAnswer}
+                error={errorQuestion}
+                errorTwo={errorAnswer}
+                value={question}
+                onChange={onChangeQuestion}
+                valueTwo={answer}
+                onChangeTwo={onChangeAnswer}
                 onClick={addCardHandler}
             />
+            <DeleteModal onClick={removeHandler}
+                         title={'Delete Card'}
+                         value={`Do you really want to remove question - ${question}?`}
+                         close={() => setShowDeleteModal(false)}
+                         open={showDeleteModal}/>
+            <EditModal
+                title={'Card info'}
+                label={"Question"}
+                labelTwo={"Answer"}
+                onClick={updateHandler}
+                error={errorQuestion}
+                errorTwo={errorAnswer}
+                value={question}
+                onChange={onChangeQuestion}
+                valueTwo={answer}
+                onChangeTwo={onChangeAnswer}
+                close={() => setShowEditModal(false)}
+                open={showEditModal}/>
             <SearchForCards searchCallback={props.getCards} disabled={false}/>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
@@ -103,40 +145,52 @@ const Cards = (props: CardsPropsType) => {
                             <TableCell align="center">answer</TableCell>
                             <TableCell align="center">Grade</TableCell>
                             <TableCell align="center">updated</TableCell>
-                            <TableCell align="center">{userId === props.cards[0].user_id ?
-                                <Button onClick={() => setShowModal(true)} variant="contained" color="primary">Add card</Button> : null}
+                            <TableCell align="center">{userId === packUserId ?
+                                <Button onClick={() => {
+                                    setShowAddModal(true)
+                                    setQuestion('')
+                                    setAnswer('')
+                                }} variant="contained" color="primary">Add
+                                    card</Button> : null}
                             </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {props.cards.map((row) => {
-                            const removeHandler = () => {
-                                props.removeCard(row._id, row.cardsPack_id)
+                                return (
+                                        <TableRow key={row._id}>
+                                            <TableCell component="th" scope="row">{row.question} </TableCell>
+                                            <TableCell align="center">{row.answer}</TableCell>
+                                            <TableCell align="center">{row.grade}</TableCell>
+                                            <TableCell align="center">{row.updated}</TableCell>
+                                            <TableCell align="center">{userId === row.user_id ?
+                                                <Button onClick={() => {
+                                                    setShowDeleteModal(true)
+                                                    setQuestion(row.question)
+                                                    setId(row._id)
+                                                    setCardsPackId(row.cardsPack_id)
+                                                }} variant="contained"
+                                                        color="primary">delete</Button> : null}
+                                            </TableCell>
+                                            <TableCell align="center">{userId === row.user_id ?
+                                                <Button onClick={() => {
+                                                    setShowEditModal(true)
+                                                    setAnswer(row.answer)
+                                                    setQuestion(row.question)
+                                                    setId(row._id)
+                                                    setCardsPackId(row.cardsPack_id)
+                                                }} variant="contained"
+                                                        color="primary">edit</Button> : null}
+                                            </TableCell>
+                                        </TableRow>
+                                )
                             }
-                            const updateHandler = () => {
-                                props.updateCard({card: {_id: row._id}}, row.cardsPack_id)
-                            }
-                            return (
-                                <TableRow key={row._id}>
-                                    <TableCell component="th" scope="row">{row.question} </TableCell>
-                                    <TableCell align="center">{row.answer}</TableCell>
-                                    <TableCell align="center">{row.grade}</TableCell>
-                                    <TableCell align="center">{row.updated}</TableCell>
-                                    <TableCell align="center">{userId === row.user_id ?
-                                        <Button onClick={removeHandler} variant="contained" color="primary">delete</Button> : null}
-                                    </TableCell>
-                                    <TableCell align="center">{userId === row.user_id ?
-                                        <Button onClick={updateHandler} variant="contained" color="primary">edit</Button> : null}
-                                    </TableCell>
-                                </TableRow>
-                            )
-                        }
                         )
-                       }
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>
-            <div style={{ height: 400, width: '100%' }}>
+            <div style={{height: 400, width: '100%'}}>
             </div>
 
 
