@@ -21,7 +21,7 @@ export const Login = () => {
 
     useEffect(() => {
         dispatch(forgotError(''))
-    }, [])
+    }, [dispatch])
 
     type FormikErrorType = {
         email?: string
@@ -44,57 +44,51 @@ export const Login = () => {
             }
             if (!values.password) {
                 errors.password = 'Required';
-            }   else if (!/^[A-Z0-9._%+-]{8,15}$/i.test(values.password)) {
+            } else if (!/^[A-Z0-9._%+-]{8,15}$/i.test(values.password)) {
                 errors.email = 'Invalid password';
             }
             return errors;
         },
         onSubmit: values => {
-            // console.log(values)
-            // alert(JSON.stringify(values));
             dispatch(loginTC(values))
             formik.resetForm()
         },
     })
-    // let onRememberMeChange = () => {
-    //    formik.values.rememberMe = !formik.values.rememberMe;
-    // }
 
-    if(isLoggedIn) {
-        return <Redirect to={'/profile'} />
+    if (isLoggedIn) {
+        return <Redirect to={'/profile'}/>
     }
 
     return (
-        <div className={s.body}>
-            <div className={s.header}>It-incubator</div>
-            <div className={s.page}>Sing In</div>
-            <form onSubmit={formik.handleSubmit}>
-                <div>
-                    <label htmlFor="email">email</label>
-                    <SuperInputText id='email' error={error}
-                            {...formik.getFieldProps('email')} />
-                    {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
-                </div>
-                <div>
-                    <label htmlFor="password">password</label>
-                    <SuperInputPassword id='password'
-                           {...formik.getFieldProps('password')} />
-                    {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
-                </div>
-                <div>
-                    {/*<label htmlFor="rememberMe">remember me</label>*/}
-                    {/*<input onChange={onRememberMeChange}*/}
-                    {/*       type="checkbox" name="rememberMe" />*/}
-                    <SuperCheckbox children={'Remember me'}
-                                   {...formik.getFieldProps('rememberMe')}/>
-                </div>
-                <NavLink to={PATH.FORGOT} className={s.textLink}>Forgot password</NavLink>
-                <div>
-                    <SuperButton type='submit'>Login</SuperButton>
-                </div>
-            </form>
-            <div className={s.text}>Don't have an account?</div>
-            <NavLink to={PATH.REGISTER} className={s.link}>Sing Up</NavLink>
+        <div className={s.wrapper}>
+            <div className={s.body}>
+                <form onSubmit={formik.handleSubmit}>
+                    <div className={s.header}>It-incubator</div>
+                    <div className={s.page}>Sing In</div>
+                    <div>
+                        <SuperInputText id='email' error={error} label={'email'}
+                                        {...formik.getFieldProps('email')} />
+                        {formik.touched.email && formik.errors.email &&
+                        <div style={{color: 'red'}}>{formik.errors.email}</div>}
+                    </div>
+                    <div>
+                        <SuperInputPassword id='password' label={'password'}
+                                            {...formik.getFieldProps('password')} />
+                        {formik.touched.password && formik.errors.password &&
+                        <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                    </div>
+                    <div>
+                        <SuperCheckbox children={'Remember me'}
+                                       {...formik.getFieldProps('rememberMe')}/>
+                    </div>
+                    <NavLink to={PATH.FORGOT} className={s.textLink}>Forgot password</NavLink>
+                    <div>
+                        <SuperButton type='submit' width={'150px'}>Login</SuperButton>
+                    </div>
+                </form>
+                <div className={s.text}>Don't have an account?</div>
+                <NavLink to={PATH.REGISTER} className={s.link}>Sing Up</NavLink>
+            </div>
         </div>
-    );
+    )
 }

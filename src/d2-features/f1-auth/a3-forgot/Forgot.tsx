@@ -13,12 +13,10 @@ type ForgotProps = {
 }
 
 const Forgot: React.FC<ForgotProps> = ({error}) => {
-
+    const dispatch = useDispatch()
     useEffect(() => {
         dispatch(forgotError(''))
-    }, [])
-
-    const dispatch = useDispatch()
+    }, [dispatch])
 
     const onForgotHandler = () => {
         dispatch(forgotTC(email))
@@ -31,16 +29,20 @@ const Forgot: React.FC<ForgotProps> = ({error}) => {
     }
 
     return (
-        <div className={s.body}>
-            <div className={s.header}>It-incubator</div>
-            <div className={s.page}>Forgot your password?</div>
-            <SuperInputText onChange={onEmailChange} error={error} placeholder={'Email'}/>
-            <div className={s.text}>Enter your email address and we will send you further instructions</div>
-            <SuperButton onClick={onForgotHandler}>Send Instructions</SuperButton>
-            <div className={s.text}>Did you remember your password?</div>
-            <NavLink to={PATH.LOGIN} className={s.link}>Try logging in</NavLink>
+        <div className={s.wrapper}>
+            <div className={s.body}>
+                <div className={s.header}>It-incubator</div>
+                <div className={s.page}>Forgot your password?</div>
+                <div>
+                    <SuperInputText onChange={onEmailChange} error={error} label={'email'}/>
+                </div>
+                <div className={s.text}>Enter your email address and we will send you further instructions</div>
+                <SuperButton onClick={onForgotHandler} width={'200px'}>Send Instructions</SuperButton>
+                <div className={s.text}>Did you remember your password?</div>
+                <NavLink to={PATH.LOGIN} className={s.link}>Try logging in</NavLink>
+            </div>
         </div>
-    );
-};
+    )
+}
 
-export default Forgot;
+export default Forgot

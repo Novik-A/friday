@@ -5,7 +5,7 @@
 }
 
 .checkbox > span {
-    color: #41B883;
+    color: #21268F;
     padding: 0.5rem 0.25rem;
 }
 
@@ -17,12 +17,12 @@
     border-radius: 4px;
     outline: none;
     transition-duration: 0.3s;
-    background-color: #41B883;
+    background-color: #21268F;
     cursor: pointer;
 }
 
 .checkbox > input:checked {
-    border: 1px solid #41B883;
+    border: 1px solid #21268F;
     background-color: #34495E;
 }
 
@@ -30,7 +30,7 @@
     content: '\2713';
     display: block;
     text-align: center;
-    color: #41B883;
+    color: #F9F9FE;
     position: absolute;
     left: 0.7rem;
     top: 0.2rem;
