@@ -90,28 +90,34 @@ export const getPackTC = (params: GetPackParams = {}) => (dispatch: Dispatch, ge
 }
 
 export const createPackTC = (newPackData: CreateParamsType, getPackParams: GetPackParams) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     tablesAPI.createCardsPack(newPackData).then(res => {
             dispatch(addPackAC(res.data))
         }
     ).then(() =>
         tablesAPI.getCardsPack(getPackParams).then(res => {
                 dispatch(getPackAC(res.data))
+                dispatch(setAppStatusAC('succeeded'))
             }
         )
     )
 }
 export const removePackTC = (id: string, getPackParams: GetPackParams) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     tablesAPI.deletePack(id).then(() =>
         tablesAPI.getCardsPack(getPackParams).then(res => {
                 dispatch(getPackAC(res.data))
+                dispatch(setAppStatusAC('succeeded'))
             }
         )
     )
 }
 export const updatePackTC = (updateData: UpdateCardsPackType, getPackParams: GetPackParams) => (dispatch: Dispatch) => {
+    // dispatch(setAppStatusAC('loading'))
     tablesAPI.updatePack(updateData).then(() =>
         tablesAPI.getCardsPack(getPackParams).then(res => {
                 dispatch(getPackAC(res.data))
+                // dispatch(setAppStatusAC('succeeded'))
             }
         )
     )
